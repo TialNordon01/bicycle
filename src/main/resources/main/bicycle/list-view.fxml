@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.bicycle.List">
+   <children>
+      <HBox alignment="CENTER" spacing="10.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="toCartButton" disable="true" mnemonicParsing="false" onAction="#toCart" text="Корзина">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="toOrdersButton" disable="true" mnemonicParsing="false" onAction="#toOrders" text="Заказы">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" text="Вход" />
+                  <Button fx:id="registrationButton" mnemonicParsing="false" onAction="#registration" text="Регистрация" />
+                  <Button fx:id="logoutButton" disable="true" mnemonicParsing="false" onAction="#logout" text="Выход" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <Label text="Список товаров">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" spacing="10.0">
+         <children>
+            <TextField fx:id="searchField" onAction="#search" onKeyTyped="#search" promptText="Поиск по названию..." HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <Button mnemonicParsing="false" onAction="#refresh" text="Обновить" />
+         </children>
+      </HBox>
+      <TableView fx:id="products" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+         <columns>
+            <TableColumn fx:id="categoryColumn" prefWidth="55.200042724609375" text="Категория" />
+            <TableColumn fx:id="nameColumn" prefWidth="84.79998970031738" text="Название" />
+            <TableColumn fx:id="specificationsColumn" prefWidth="75.0" text="Характеристики" />
+            <TableColumn fx:id="manufacturerColumn" prefWidth="67.99996185302734" text="Производитель" />
+            <TableColumn fx:id="supplierColumn" minWidth="0.0" prefWidth="56.800018310546875" text="Поставщик" />
+            <TableColumn fx:id="articleColumn" prefWidth="55.200042724609375" text="Артикул" />
+            <TableColumn fx:id="priceColumn" prefWidth="55.200042724609375" text="Цена" />
+         </columns>
+      </TableView>
+      <HBox alignment="CENTER_RIGHT">
+         <children>
+            <VBox alignment="CENTER_RIGHT">
+               <children>
+                  <Label text="Категория товара">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="categories" onAction="#setCategory" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

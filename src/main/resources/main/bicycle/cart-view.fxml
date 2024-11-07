@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.bicycle.Cart">
+   <children>
+      <Label text="Корзина">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+         <children>
+            <TableView fx:id="products" HBox.hgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="categoryColumn" prefWidth="55.200042724609375" text="Категория" />
+                  <TableColumn fx:id="nameColumn" prefWidth="84.79998970031738" text="Название" />
+                  <TableColumn fx:id="specificationsColumn" prefWidth="75.0" text="Характеристики" />
+                  <TableColumn fx:id="manufacturerColumn" prefWidth="67.99996185302734" text="Производитель" />
+                  <TableColumn fx:id="supplierColumn" minWidth="0.0" prefWidth="56.800018310546875" text="Поставщик" />
+                  <TableColumn fx:id="articleColumn" prefWidth="55.200042724609375" text="Артикул" />
+                  <TableColumn fx:id="priceColumn" prefWidth="55.200042724609375" text="Цена" />
+               </columns>
+            </TableView>
+            <VBox alignment="TOP_CENTER" spacing="10.0">
+               <children>
+                  <Label text="Пункты выдачи">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="pickupPoints" prefWidth="150.0" />
+                  <Label text="Логин заказчика">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="login" />
+                  <Label text="Общая стоимость">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="price">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" spacing="20.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#back" text="Назад">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#order" text="Оформить заказ">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>
