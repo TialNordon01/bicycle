@@ -16,6 +16,60 @@ INSERT INTO `admin_code` VALUES ('45la874a');
 INSERT INTO `admin_code` VALUES ('111222333');
 
 -- ----------------------------
+-- Table structure for pickup_point
+-- ----------------------------
+DROP TABLE IF EXISTS `pickup_point`;
+CREATE TABLE `pickup_point`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of pickup_point
+-- ----------------------------
+INSERT INTO `pickup_point` VALUES (1, 'Мещерский бульвар, 3к3');
+INSERT INTO `pickup_point` VALUES (2, 'бул. Мира, 15');
+
+-- ----------------------------
+-- Table structure for manufacturer
+-- ----------------------------
+DROP TABLE IF EXISTS `manufacturer`;
+CREATE TABLE `manufacturer`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of manufacturer
+-- ----------------------------
+INSERT INTO `manufacturer` VALUES (1, 'Shimano');
+INSERT INTO `manufacturer` VALUES (2, 'Sram');
+INSERT INTO `manufacturer` VALUES (6, 'Tektro');
+INSERT INTO `manufacturer` VALUES (7, 'M-Wave');
+INSERT INTO `manufacturer` VALUES (8, 'Superwin');
+
+-- ----------------------------
+-- Table structure for supplier
+-- ----------------------------
+DROP TABLE IF EXISTS `supplier`;
+CREATE TABLE `supplier`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of supplier
+-- ----------------------------
+INSERT INTO `supplier` VALUES (1, 'Shimano');
+INSERT INTO `supplier` VALUES (2, 'Sram');
+INSERT INTO `supplier` VALUES (3, 'Tektro');
+INSERT INTO `supplier` VALUES (4, 'M-Wave');
+INSERT INTO `supplier` VALUES (5, 'Superwin');
+
+-- ----------------------------
 -- Table structure for category
 -- ----------------------------
 DROP TABLE IF EXISTS `category`;
@@ -40,80 +94,51 @@ INSERT INTO `category` VALUES (10, 'Цепь');
 INSERT INTO `category` VALUES (11, 'Трещотка');
 
 -- ----------------------------
--- Table structure for manufacturer
+-- Table structure for role
 -- ----------------------------
-DROP TABLE IF EXISTS `manufacturer`;
-CREATE TABLE `manufacturer`  (
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of manufacturer
+-- Records of role
 -- ----------------------------
-INSERT INTO `manufacturer` VALUES (1, 'Shimano');
-INSERT INTO `manufacturer` VALUES (2, 'Sram');
-INSERT INTO `manufacturer` VALUES (6, 'Tektro');
-INSERT INTO `manufacturer` VALUES (7, 'M-Wave');
-INSERT INTO `manufacturer` VALUES (8, 'Superwin');
+INSERT INTO `role` VALUES (1, 'Клиент');
+INSERT INTO `role` VALUES (2, 'Сотрудник');
 
 -- ----------------------------
--- Table structure for order
+-- Table structure for user
 -- ----------------------------
-DROP TABLE IF EXISTS `order`;
-CREATE TABLE `order`  (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_user` int NOT NULL,
-  `id_pickup_point` int NOT NULL,
-  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `price` decimal(10, 2) NOT NULL DEFAULT 0.00,
+  `id_role` int NOT NULL,
+  `login` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `mail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `order_ibfk_1`(`id_pickup_point` ASC) USING BTREE,
-  INDEX `order_ibfk_2`(`id_user` ASC) USING BTREE,
-  CONSTRAINT `order_ibfk_1` FOREIGN KEY (`id_pickup_point`) REFERENCES `pickup_point` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `order_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  INDEX `user_ibfk_1`(`id_role` ASC) USING BTREE,
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of order
+-- Records of user
 -- ----------------------------
-INSERT INTO `order` VALUES (19, 1, 2, 'Новый', 6630.00);
-
--- ----------------------------
--- Table structure for order_product
--- ----------------------------
-DROP TABLE IF EXISTS `order_product`;
-CREATE TABLE `order_product`  (
-  `id_product` int NOT NULL,
-  `id_order` int NOT NULL,
-  INDEX `order_product_ibfk_1`(`id_order` ASC) USING BTREE,
-  INDEX `order_product_ibfk_2`(`id_product` ASC) USING BTREE,
-  CONSTRAINT `order_product_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `order_product_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of order_product
--- ----------------------------
-INSERT INTO `order_product` VALUES (7, 19);
-INSERT INTO `order_product` VALUES (5, 19);
-
--- ----------------------------
--- Table structure for pickup_point
--- ----------------------------
-DROP TABLE IF EXISTS `pickup_point`;
-CREATE TABLE `pickup_point`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of pickup_point
--- ----------------------------
-INSERT INTO `pickup_point` VALUES (1, 'Мещерский бульвар, 3к3');
-INSERT INTO `pickup_point` VALUES (2, 'бул. Мира, 15');
+INSERT INTO `user` VALUES (1, 1, 'user', '123', 'Кирилл Петров Сергеевич', '+72838136261', 'yehilir-eha56@mail.com');
+INSERT INTO `user` VALUES (2, 1, 'leralera', '7788999', 'Лера Русинова Петровна', '+76156849834', 'vuwuzid_apa29@gmail.com');
+INSERT INTO `user` VALUES (3, 1, 'fidgi2001', '456456', 'Дмитрий Иванов Петрович', '+73311748806', 'hitef-usubi97@yahoo.com');
+INSERT INTO `user` VALUES (4, 2, 'admin', '111', 'Михаил Беляев Сергеевич', '+77939960491', 'zanepox_oci20@yahoo.com');
+INSERT INTO `user` VALUES (5, 2, 'jeromi', '123456789', 'Леонид Шустров Леонидович', '+76356506363', 'yohuza-zace24@mail.com');
+INSERT INTO `user` VALUES (6, 2, 'lemma789', '7777777777', 'Максим Лашков Анатольевич', '+79412197239', 'gikisi-deba75@outlook.com');
+INSERT INTO `user` VALUES (9, 1, 'a', 'a', 'a', '+78005553535', 'mail@mail.ru');
+INSERT INTO `user` VALUES (10, 1, 'f', 'f', 'f', '4564545', 'log@log.ru');
+INSERT INTO `user` VALUES (11, 1, 'dada', 'dada', 'dadada', '+666669666', 'mail@mail.ru');
+INSERT INTO `user` VALUES (12, 1, 'michael', 'vbif2005', 'Беляев Михаил Сергеевич', '+78005553535', 'mail@mail.ru');
 
 -- ----------------------------
 -- Table structure for product
@@ -155,6 +180,47 @@ INSERT INTO `product` VALUES (16, 5, 8, 11, 'Трещотка Superwin KFW-884',
 INSERT INTO `product` VALUES (17, 1, 1, 10, 'Цепь Shimano HG701', '11ск 116зв амп пин 1шт ROAD/MTB/E-BIKE совмест.', 8850.00, '37057', 25);
 
 -- ----------------------------
+-- Table structure for order_product
+-- ----------------------------
+DROP TABLE IF EXISTS `order_product`;
+CREATE TABLE `order_product`  (
+  `id_product` int NOT NULL,
+  `id_order` int NOT NULL,
+  INDEX `order_product_ibfk_1`(`id_order` ASC) USING BTREE,
+  INDEX `order_product_ibfk_2`(`id_product` ASC) USING BTREE,
+  CONSTRAINT `order_product_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_product_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of order_product
+-- ----------------------------
+INSERT INTO `order_product` VALUES (7, 19);
+INSERT INTO `order_product` VALUES (5, 19);
+
+-- ----------------------------
+-- Table structure for order
+-- ----------------------------
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE `order`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_user` int NOT NULL,
+  `id_pickup_point` int NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `price` decimal(10, 2) NOT NULL DEFAULT 0.00,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `order_ibfk_1`(`id_pickup_point` ASC) USING BTREE,
+  INDEX `order_ibfk_2`(`id_user` ASC) USING BTREE,
+  CONSTRAINT `order_ibfk_1` FOREIGN KEY (`id_pickup_point`) REFERENCES `pickup_point` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of order
+-- ----------------------------
+INSERT INTO `order` VALUES (19, 1, 2, 'Новый', 6630.00);
+
+-- ----------------------------
 -- Table structure for refund
 -- ----------------------------
 DROP TABLE IF EXISTS `refund`;
@@ -169,72 +235,6 @@ CREATE TABLE `refund`  (
 -- Records of refund
 -- ----------------------------
 INSERT INTO `refund` VALUES (19, 'sss');
-
--- ----------------------------
--- Table structure for role
--- ----------------------------
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of role
--- ----------------------------
-INSERT INTO `role` VALUES (1, 'Клиент');
-INSERT INTO `role` VALUES (2, 'Сотрудник');
-
--- ----------------------------
--- Table structure for supplier
--- ----------------------------
-DROP TABLE IF EXISTS `supplier`;
-CREATE TABLE `supplier`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of supplier
--- ----------------------------
-INSERT INTO `supplier` VALUES (1, 'Shimano');
-INSERT INTO `supplier` VALUES (2, 'Sram');
-INSERT INTO `supplier` VALUES (3, 'Tektro');
-INSERT INTO `supplier` VALUES (4, 'M-Wave');
-INSERT INTO `supplier` VALUES (5, 'Superwin');
-
--- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_role` int NOT NULL,
-  `login` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `mail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_ibfk_1`(`id_role` ASC) USING BTREE,
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES (1, 1, 'user', '123', 'Кирилл Петров Сергеевич', '+72838136261', 'yehilir-eha56@mail.com');
-INSERT INTO `user` VALUES (2, 1, 'leralera', '7788999', 'Лера Русинова Петровна', '+76156849834', 'vuwuzid_apa29@gmail.com');
-INSERT INTO `user` VALUES (3, 1, 'fidgi2001', '456456', 'Дмитрий Иванов Петрович', '+73311748806', 'hitef-usubi97@yahoo.com');
-INSERT INTO `user` VALUES (4, 2, 'admin', '111', 'Михаил Беляев Сергеевич', '+77939960491', 'zanepox_oci20@yahoo.com');
-INSERT INTO `user` VALUES (5, 2, 'jeromi', '123456789', 'Леонид Шустров Леонидович', '+76356506363', 'yohuza-zace24@mail.com');
-INSERT INTO `user` VALUES (6, 2, 'lemma789', '7777777777', 'Максим Лашков Анатольевич', '+79412197239', 'gikisi-deba75@outlook.com');
-INSERT INTO `user` VALUES (9, 1, 'a', 'a', 'a', '+78005553535', 'mail@mail.ru');
-INSERT INTO `user` VALUES (10, 1, 'f', 'f', 'f', '4564545', 'log@log.ru');
-INSERT INTO `user` VALUES (11, 1, 'dada', 'dada', 'dadada', '+666669666', 'mail@mail.ru');
-INSERT INTO `user` VALUES (12, 1, 'michael', 'vbif2005', 'Беляев Михаил Сергеевич', '+78005553535', 'mail@mail.ru');
 
 -- ----------------------------
 -- Triggers structure for table order_product
@@ -358,5 +358,3 @@ CREATE TRIGGER `remove_empty_orders_delete` AFTER DELETE ON `order_product` FOR 
 END
 ;;
 delimiter ;
-
-SET FOREIGN_KEY_CHECKS = 1;
