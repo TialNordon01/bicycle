@@ -1,6 +1,10 @@
+
+
 CREATE DATABASE IF NOT EXISTS javafxTest;
 USE javafxTest;
 
+GRANT ALL PRIVILEGES ON bicycle.* TO 'javafxTest'@'%' IDENTIFIED WITH 'changeme';
+FLUSH PRIVILEGES;
 -- ----------------------------
 -- Table structure for admin_code
 -- ----------------------------
@@ -180,25 +184,6 @@ INSERT INTO `product` VALUES (16, 5, 8, 11, 'Трещотка Superwin KFW-884',
 INSERT INTO `product` VALUES (17, 1, 1, 10, 'Цепь Shimano HG701', '11ск 116зв амп пин 1шт ROAD/MTB/E-BIKE совмест.', 8850.00, '37057', 25);
 
 -- ----------------------------
--- Table structure for order_product
--- ----------------------------
-DROP TABLE IF EXISTS `order_product`;
-CREATE TABLE `order_product`  (
-  `id_product` int NOT NULL,
-  `id_order` int NOT NULL,
-  INDEX `order_product_ibfk_1`(`id_order` ASC) USING BTREE,
-  INDEX `order_product_ibfk_2`(`id_product` ASC) USING BTREE,
-  CONSTRAINT `order_product_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `order_product_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of order_product
--- ----------------------------
-INSERT INTO `order_product` VALUES (7, 19);
-INSERT INTO `order_product` VALUES (5, 19);
-
--- ----------------------------
 -- Table structure for order
 -- ----------------------------
 DROP TABLE IF EXISTS `order`;
@@ -221,6 +206,25 @@ CREATE TABLE `order`  (
 INSERT INTO `order` VALUES (19, 1, 2, 'Новый', 6630.00);
 
 -- ----------------------------
+-- Table structure for order_product
+-- ----------------------------
+DROP TABLE IF EXISTS `order_product`;
+CREATE TABLE `order_product`  (
+  `id_product` int NOT NULL,
+  `id_order` int NOT NULL,
+  INDEX `order_product_ibfk_1`(`id_order` ASC) USING BTREE,
+  INDEX `order_product_ibfk_2`(`id_product` ASC) USING BTREE,
+  CONSTRAINT `order_product_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_product_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of order_product
+-- ----------------------------
+INSERT INTO `order_product` VALUES (7, 19);
+INSERT INTO `order_product` VALUES (5, 19);
+
+-- ----------------------------
 -- Table structure for refund
 -- ----------------------------
 DROP TABLE IF EXISTS `refund`;
@@ -241,7 +245,8 @@ INSERT INTO `refund` VALUES (19, 'sss');
 -- ----------------------------
 DROP TRIGGER IF EXISTS `check_product_count_insert`;
 delimiter ;;
-CREATE TRIGGER `check_product_count_insert` BEFORE INSERT ON `order_product` FOR EACH ROW BEGIN
+CREATE DEFINER=`root`@`localhost`
+TRIGGER `check_product_count_insert` BEFORE INSERT ON `order_product` FOR EACH ROW BEGIN
    IF (SELECT count FROM product WHERE id = NEW.id_product) <= 0 THEN
        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot insert product with count less than or equal to 0';
    END IF;
@@ -252,7 +257,8 @@ delimiter ;
 -- ----------------------------
 -- Triggers structure for table order_product
 -- ----------------------------
-DROP TRIGGER IF EXISTS `decrement_product_count_insert`;
+DROP DEFINER=`root`@`localhost`
+TRIGGER IF EXISTS `decrement_product_count_insert`;
 delimiter ;;
 CREATE TRIGGER `decrement_product_count_insert` AFTER INSERT ON `order_product` FOR EACH ROW BEGIN
   UPDATE product
@@ -265,7 +271,8 @@ delimiter ;
 -- ----------------------------
 -- Triggers structure for table order_product
 -- ----------------------------
-DROP TRIGGER IF EXISTS `update_order_price_insert`;
+DROP DEFINER=`root`@`localhost`
+TRIGGER IF EXISTS `update_order_price_insert`;
 delimiter ;;
 CREATE TRIGGER `update_order_price_insert` AFTER INSERT ON `order_product` FOR EACH ROW BEGIN
    UPDATE `order`
@@ -281,7 +288,8 @@ delimiter ;
 -- ----------------------------
 -- Triggers structure for table order_product
 -- ----------------------------
-DROP TRIGGER IF EXISTS `check_product_count_update`;
+DROP DEFINER=`root`@`localhost`
+TRIGGER IF EXISTS `check_product_count_update`;
 delimiter ;;
 CREATE TRIGGER `check_product_count_update` BEFORE UPDATE ON `order_product` FOR EACH ROW BEGIN
    IF (SELECT count FROM product WHERE id = NEW.id_product) <= 0 THEN
@@ -294,7 +302,8 @@ delimiter ;
 -- ----------------------------
 -- Triggers structure for table order_product
 -- ----------------------------
-DROP TRIGGER IF EXISTS `decrement_product_count_update`;
+DROP DEFINER=`root`@`localhost`
+TRIGGER IF EXISTS `decrement_product_count_update`;
 delimiter ;;
 CREATE TRIGGER `decrement_product_count_update` AFTER UPDATE ON `order_product` FOR EACH ROW BEGIN
   UPDATE product
@@ -307,7 +316,8 @@ delimiter ;
 -- ----------------------------
 -- Triggers structure for table order_product
 -- ----------------------------
-DROP TRIGGER IF EXISTS `remove_empty_orders_update`;
+DROP DEFINER=`root`@`localhost`
+TRIGGER IF EXISTS `remove_empty_orders_update`;
 delimiter ;;
 CREATE TRIGGER `remove_empty_orders_update` AFTER UPDATE ON `order_product` FOR EACH ROW BEGIN
 	IF (SELECT COUNT(*) FROM order_product WHERE id_order = OLD.id_order) = 0 THEN
@@ -320,7 +330,8 @@ delimiter ;
 -- ----------------------------
 -- Triggers structure for table order_product
 -- ----------------------------
-DROP TRIGGER IF EXISTS `update_order_price_update`;
+DROP DEFINER=`root`@`localhost`
+TRIGGER IF EXISTS `update_order_price_update`;
 delimiter ;;
 CREATE TRIGGER `update_order_price_update` AFTER UPDATE ON `order_product` FOR EACH ROW BEGIN
    UPDATE `order`
@@ -336,7 +347,8 @@ delimiter ;
 -- ----------------------------
 -- Triggers structure for table order_product
 -- ----------------------------
-DROP TRIGGER IF EXISTS `increment_product_count_delete`;
+DROP DEFINER=`root`@`localhost`
+TRIGGER IF EXISTS `increment_product_count_delete`;
 delimiter ;;
 CREATE TRIGGER `increment_product_count_delete` AFTER DELETE ON `order_product` FOR EACH ROW BEGIN
   UPDATE product
@@ -349,7 +361,8 @@ delimiter ;
 -- ----------------------------
 -- Triggers structure for table order_product
 -- ----------------------------
-DROP TRIGGER IF EXISTS `remove_empty_orders_delete`;
+DROP DEFINER=`root`@`localhost`
+TRIGGER IF EXISTS `remove_empty_orders_delete`;
 delimiter ;;
 CREATE TRIGGER `remove_empty_orders_delete` AFTER DELETE ON `order_product` FOR EACH ROW BEGIN
 	IF (SELECT COUNT(*) FROM order_product WHERE id_order = OLD.id_order) = 0 THEN
