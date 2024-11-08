@@ -15,7 +15,7 @@ public class Start extends Application {
     static {
         try {
             database = new Database(
-                    "jdbc:mysql://localhost:13306/bicycle",
+                    "jdbc:mysql://localhost:13306/javafxTest",
                     "javafxTest",
                     "changeme"
             );
