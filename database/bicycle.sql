@@ -1,5 +1,21 @@
-CREATE DATABASE IF NOT EXISTS javafxTest;
-USE javafxTest;
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : mysql
+ Source Server Type    : MySQL
+ Source Server Version : 80033 (8.0.33)
+ Source Host           : localhost:3306
+ Source Schema         : bicycle
+
+ Target Server Type    : MySQL
+ Target Server Version : 80033 (8.0.33)
+ File Encoding         : 65001
+
+ Date: 01/12/2023 22:17:43
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for admin_code
@@ -255,7 +271,7 @@ delimiter ;
 DROP TRIGGER IF EXISTS `decrement_product_count_insert`;
 delimiter ;;
 CREATE TRIGGER `decrement_product_count_insert` AFTER INSERT ON `order_product` FOR EACH ROW BEGIN
-  UPDATE product
+  UPDATE product 
   SET count = count - 1
   WHERE id = NEW.id_product;
 END
@@ -297,7 +313,7 @@ delimiter ;
 DROP TRIGGER IF EXISTS `decrement_product_count_update`;
 delimiter ;;
 CREATE TRIGGER `decrement_product_count_update` AFTER UPDATE ON `order_product` FOR EACH ROW BEGIN
-  UPDATE product
+  UPDATE product 
   SET count = count - 1
   WHERE id = NEW.id_product;
 END
@@ -339,7 +355,7 @@ delimiter ;
 DROP TRIGGER IF EXISTS `increment_product_count_delete`;
 delimiter ;;
 CREATE TRIGGER `increment_product_count_delete` AFTER DELETE ON `order_product` FOR EACH ROW BEGIN
-  UPDATE product
+  UPDATE product 
   SET count = count + 1
   WHERE id = OLD.id_product;
 END
